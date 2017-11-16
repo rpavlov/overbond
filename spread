@@ -6,13 +6,13 @@ require './lib/spread.rb'
 args = {}
 OptionParser.new do |opt|
   opt.on('-i', '--input FILE', 'File to read') {
-    |o| args[:file_in] = o
+    |o| args[:input] = o
   }
-  opt.on('-c', '--corporate', 'Return corporate spread') {
-    |o| args[:corporate] = true
+  opt.on('-c', '--curve', 'Return bond curve') {
+    |o| args[:curve] = true
   }
-  opt.on('-g', '--government', 'Return government spread') {
-    |o| args[:government] = true
+  opt.on('-b', '--benchmark', 'Return bond benchmark') {
+    |o| args[:benchmark] = true
   }
 end.parse!
 
