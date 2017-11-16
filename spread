@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require './lib/spread.rb'
+
+#Setup ability to pass command line arguments neatly.
+args = {}
+OptionParser.new do |opt|
+  opt.on('-i', '--input FILE', 'File to read') {
+    |o| args[:file_in] = o
+  }
+  opt.on('-c', '--corporate', 'Return corporate spread') {
+    |o| args[:corporate] = true
+  }
+  opt.on('-g', '--government', 'Return government spread') {
+    |o| args[:government] = true
+  }
+end.parse!
+
+#abort "Missing input or output file" unless (args[:file_in])
+
+Spread.calculate(args)
