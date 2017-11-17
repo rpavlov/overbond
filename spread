@@ -16,6 +16,6 @@ OptionParser.new do |opt|
   }
 end.parse!
 
-abort "Missing input or output file" unless (args[:file_in])
+abort "Missing input or output file" unless (args[:input])
 
 Spread.calculate(args)
