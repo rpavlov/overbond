@@ -2,21 +2,20 @@
 
     $ ./spread --benchmark --curve -i sample_input.csv
 
-Depending on your desired output supply -c or -b for just curve or benchmark.
+Depending on your desired output, supply just -c or -b for either curve or benchmark calculation respectively.
 
     $ ./spread -h
 
 If confused.
 
+# Prerequisites
+
+ruby >= 2.4.2
+
 # Technical choices
 
 * BigDecimal for working with decimals/money.
 * CSV for parsing csv inputs.
-
-
-# Prerequisites
-
-ruby >= 2.4.2
 
 # Testing
 
