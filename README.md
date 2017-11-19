@@ -8,6 +8,12 @@ Depending on your desired output supply -c or -b for just curve or benchmark.
 
 If confused.
 
+# Technical choices
+
+* BigDecimal for working with decimals/money.
+* CSV for parsing csv inputs.
+
+
 # Prerequisites
 
 ruby >= 2.4.2
@@ -19,7 +25,7 @@ ruby >= 2.4.2
 # Assumptions
 
 * A well-formed CSV input.
-* Usable data, in terms of bond terms and presence of government bonds.
+* Usable data, for bond terms and actual presence of government bond rows.
 
 # TODO
 
