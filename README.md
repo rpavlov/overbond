@@ -14,6 +14,7 @@ ruby >= 2.4.2
 
 # Technical choices
 
+* optparse for better handling of command line arguments
 * BigDecimal for working with decimals/money.
 * CSV for parsing csv inputs.
 
