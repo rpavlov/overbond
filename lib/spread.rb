@@ -1,7 +1,6 @@
 require 'csv'
 require 'bigdecimal'
 require 'bigdecimal/util'
-require 'byebug'
 
 class Spread
   def self.calculate(args)
@@ -26,9 +25,10 @@ class Spread
 
   def self.benchmark(data)
     result = [["bond", "benchmark", "spread_to_benchmark"]]
+    government_bonds = data.select{|bond| bond["type"] == "government"}
 
     data.select{|bond| bond["type"] == "corporate"}.each do |bond|
-      benchmark = best_benchmark_for(bond, data.select{|bond| bond["type"] == "government"})
+      benchmark = best_benchmark_for(bond, government_bonds)
 
       spread = (bond["yield"].to_d - benchmark["yield"].to_d).abs.to_digits #Do we consider negative yield?
       result << [bond["bond"], benchmark["bond"], spread + "%"]
@@ -37,12 +37,12 @@ class Spread
   end
 
   def self.curve(data)
+
     result = [["bond", "spread_to_curve"]]
     government_bonds = data.select{|bond| bond["type"] == "government"}
 
     data.select{|bond| bond["type"] == "corporate"}.each do |bond|
-
-      spread = bond["yield"].to_d - linear_interpolation(bond, government_bonds).round(2)
+      spread = bond["yield"].to_d - linear_interpolation(bond, government_bonds)
       result << [bond["bond"], spread.to_digits + "%"]
     end
     result
@@ -61,7 +61,7 @@ class Spread
     end
   end
 
-  #Here we want to find two closest bonds, with terms closest before and after that of the corporate bond.
+  #Here we want to find two closest bonds, with terms before and after that of the corporate bond.
   def self.best_benchmarks_for_curve(corporate_bond, government_bonds)
     combined_bonds = (government_bonds << corporate_bond).sort_by{|bond| bond["term"].to_d}
 
@@ -71,8 +71,12 @@ class Spread
   def self.linear_interpolation(corporate_bond, government_bonds)
     bonds = best_benchmarks_for_curve(corporate_bond, government_bonds)
 
-      ( bonds[0]["yield"].to_d * (bonds[1]["term"].to_d - corporate_bond["term"].to_d) +
-      bonds[1]["yield"].to_d * ( corporate_bond["term"].to_d - bonds[0]["term"].to_d ) ) /
-      (bonds[1]["term"].to_d - bonds[0]["term"].to_d)
+    y0=bonds[0]["yield"].to_d
+    y1=bonds[1]["yield"].to_d
+    x1=bonds[1]["term"].to_d
+    x= corporate_bond["term"].to_d
+    x0=bonds[0]["term"].to_d
+
+    y = ((y0 * (x1 - x) + y1 *(x - x0)) / (x1 - x0)).round(2)
   end
 end

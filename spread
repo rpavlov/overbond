@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'optparse'
-require './lib/spread.rb'
+require './lib/spread'
 
 #Setup ability to pass command line arguments neatly.
 args = {}
@@ -9,13 +9,15 @@ OptionParser.new do |opt|
     |o| args[:input] = o
   }
   opt.on('-c', '--curve', 'Return bond curve') {
-    |o| args[:curve] = true
+    |o| args[:curve] = o
   }
   opt.on('-b', '--benchmark', 'Return bond benchmark') {
-    |o| args[:benchmark] = true
+    |o| args[:benchmark] = o
   }
 end.parse!
 
-abort "Missing input or output file" unless (args[:input])
-
-Spread.calculate(args)
+if (args[:input])
+  Spread.calculate(args)
+else
+  puts "Missing input file"
+end
